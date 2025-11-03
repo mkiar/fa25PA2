@@ -88,6 +88,9 @@ int createLeafNodes(int freq[]) {
 }
 
 // Step 3: Build the encoding tree using heap operations
+
+// Implements the Huffman encoding tree using MinHeap
+// Returns the index of the root node
 int buildEncodingTree(int nextFree) {
     // TODO:
     // 1. Create a MinHeap object.
