@@ -144,6 +144,10 @@ void generateCodes(int root, string codes[]) {
 
         if (leftArr[node] == -1 && rightArr[node] == -1) {
             int index = charArr[node] - 'a';
+            // handle one char case
+            if (code == "") {
+                code = "0";
+            }
             codes[index] = code;
         } else {
             // Left edge adds '0', right edge adds '1'.
