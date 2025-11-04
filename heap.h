@@ -19,8 +19,8 @@ struct MinHeap {
     void push(int idx, int weightArr[]) {
         // TODO: insert index at end of heap, restore order using upheap()
         if (size >= 64) {
-            cout << "Heap overflow" << endl;
-            return;
+             cout << "Heap overflow" << endl;
+             return;
         }
         data[size] = idx;
         upheap(size, weightArr);
@@ -32,15 +32,15 @@ struct MinHeap {
         // TODO: remove and return smallest index
         // Replace root with last element, then call downheap()
         if (size == 0) {
-            cout << "Heap underflow" << endl;
-            return -1;
+             cout << "Heap underflow" << endl;
+             return -1;
         }
         int smallIndex = data[0];
         size--;
 
         if (size > 0) {
-            data[0] = data[size];
-            downheap(0, weightArr);
+             data[0] = data[size];
+             downheap(0, weightArr);
         }
 
         return smallIndex;
