@@ -39,6 +39,7 @@ int main() {
     generateCodes(root, codes);
 
     // Step 5: Encode the message and print output
+
     encodeMessage("input.txt", codes);
 
     return 0;
@@ -99,30 +100,61 @@ int buildEncodingTree(int nextFree) {
     for (int i = 0; i < nextFree; i++) {
         heap.push(i, weightArr);
     }
-    // 3. While the heap size is greater than 1:
-    //    - Pop two smallest nodes
-    //    - Create a new parent node with combined weight
-    //    - Set left/right pointers
-    //    - Push new parent index back into the heap
     while (heap.size > 1) {
+        // - Pop two smallest nodes
         int left = heap.pop(weightArr);
         int right = heap.pop(weightArr);
-        int parent = nextFree + 1;
+        int parent = nextFree;
+        nextFree++;
+
+        //    - Create a new parent node with combined weight
         weightArr[parent] = weightArr[left] + weightArr[right];
+        // - Set left/right pointers
         leftArr[parent] = left;
         rightArr[parent] = right;
+        charArr[parent] = '-'; // added this due to problems for generateCodes because of empty char arr
+
+        //    - Push new parent index back into the heap
         heap.push(parent, weightArr);
     }
     // 4. Return the index of the last remaining node (root)
-    return heap.pop(weightArr); // placeholder
+    return heap.pop(weightArr);;
 }
 
 // Step 4: Use an STL stack to generate codes
+
+// Performs a DFS traversal of the encoded tree using a stack
+// creates binary codes for each character until it reaches a leaf node
+// Dumps the binary code into the codes array
 void generateCodes(int root, string codes[]) {
     // TODO:
+    if (root == -1) {
+        return;
+    }
     // Use stack<pair<int, string>> to simulate DFS traversal.
-    // Left edge adds '0', right edge adds '1'.
-    // Record code when a leaf node is reached.
+    stack<pair<int, string>> codesStack;
+    codesStack.push({root, ""}); // to ensure stack isnt empty
+
+
+    while (!codesStack.empty()) {
+        pair<int, string> top = codesStack.top();
+        int node = top.first;
+        string code = top.second;
+        codesStack.pop();
+
+        if (leftArr[node] == -1 && rightArr[node] == -1) {
+            int index = charArr[node] - 'a';
+            codes[index] = code;
+        } else {
+            // Left edge adds '0', right edge adds '1'.
+            if (leftArr[node] != -1) {
+                codesStack.push({leftArr[node], code + "0"});
+            }
+            if (rightArr[node] != -1) {
+                codesStack.push({rightArr[node], code + "1"});
+            }
+        }
+    }
 }
 
 // Step 5: Print table and encoded message
